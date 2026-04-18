@@ -42,99 +42,136 @@ def webhook():
 def procesar_mensaje(msg):
     msg = msg.lower().strip()
 
-    # SALUDO
-    if re.search(r"\b(hola|buenas|hey|salon|informacion)\b", msg):
+    # SALUDO / INICIO
+    if re.search(r"\b(hola|holi|buenas|buenos dias|buenas tardes|buenas noches|hey|informacion|info)\b", msg):
         return (
-            "💇‍♀️ ¡Bienvenido a nuestro Salón de Belleza!\n\n"
-            "✨ Puedes consultar:\n"
+            "💇‍♀️ ¡Hola! Bienvenido a nuestro Salón de Belleza ELVIA.\n\n"
+            "Con gusto puedo ayudarte con:\n"
             "📍 Ubicaciones\n"
             "🕒 Horarios\n"
             "💰 Precios\n"
-            "📅 Citas\n"
+            "📦 Disponibilidad\n"
             "✨ Servicios\n"
-            "📦 Disponibilidad\n\n"
-            "Escribe lo que necesitas 😊"
+            "📅 Citas\n\n"
+            "Escribe la opción que deseas consultar."
         )
 
     # UBICACIONES
-    elif re.search(r"\b(ubicacion|ubicaciones|donde estan|direccion)\b", msg):
+    elif re.search(r"\b(ubicacion|ubicaciones|direccion|direcciones|donde estan|donde se ubican|donde queda|donde quedan|donde se encuentran|sucursales)\b", msg):
         return (
-            "📍 Nuestras ubicaciones disponibles:\n"
-            "1. Centro de la ciudad\n"
-            "2. Zona comercial\n\n"
-            "Puedes escribir 'mapa' para más detalles."
+            "📍 Contamos con estas ubicaciones:\n"
+            "1. Sucursal Centro de santa cruz del Quiche\n"
+            "2. Sucursal Zona 1-calle 4 cuidad de Guatemala\n\n"
+            "Si deseas más detalle, escribe: mapa"
         )
 
     # MAPA
-    elif re.search(r"\b(mapa|ubicacion exacta)\b", msg):
+    elif re.search(r"\b(mapa|ubicacion exacta|google maps|maps)\b", msg):
         return (
-            "📍 Ubicación de referencia:\n"
+            "🗺️ Aquí puedes consultar una ubicación de referencia:\n"
             "https://maps.google.com\n\n"
-            "Te esperamos 💇‍♀️"
+            "Si deseas, también puedo ayudarte con horarios o precios."
         )
 
     # HORARIOS
-    elif re.search(r"\b(horario|horarios|hora|abren|atienden)\b", msg):
+    elif re.search(r"\b(horario|horarios|hora|horas|abren|atienden|cuando atienden|que horario atienden|que hora abren)\b", msg):
         return (
-            "🕒 Horario de atención:\n"
+            "🕒 Nuestro horario de atención es:\n"
             "Lunes a sábado\n"
-            "⏰ 8:00 AM - 6:00 PM"
+            "⏰ 8:00 AM a 6:00 PM\n\n"
+            "Si deseas reservar, escribe: cita + servicio + hora"
         )
 
-    # PRECIOS Y DISPONIBILIDAD
-    elif re.search(r"\b(precio|precios|costo|cuanto|valor|disponible|disponibilidad|tienen|hay espacio)\b", msg):
+    # SERVICIOS
+    elif re.search(r"\b(servicio|servicios|que ofrecen|que hacen|tratamientos|trabajos|servicios disponibles)\b", msg):
         return (
-            "💰 Información de precios y disponibilidad:\n"
+            "✨ Estos son algunos de nuestros servicios:\n"
+            "💇‍♀️ Corte de cabello\n"
+            "💅 Manicure y pedicure\n"
+            "🎨 Tinte y coloración\n"
+            "💆‍♀️ Tratamientos capilares\n\n"
+            "También puedes consultar precios o disponibilidad."
+        )
+
+    # PRECIOS
+    elif re.search(r"\b(precio|precios|costo|costos|cuanto|cuánto|valor|vale|tarifa|tarifas|cuales son sus precios)\b", msg):
+        return (
+            "💰 Estos son nuestros precios aproximados:\n"
+            "💇‍♀️ Corte: Q40\n"
+            "💅 Manicure: Q170\n"
+            "🎨 Tinte: desde Q300\n"
+            "💆‍♀️ Tratamientos: desde Q400\n\n"
+            "Si deseas, también puedo indicarte disponibilidad."
+        )
+
+    # DISPONIBILIDAD
+    elif re.search(r"\b(disponible|disponibilidad|hay espacio|tienen espacio|hay cita|tienen cita|hay cupo|cupo|espacio)\b", msg):
+        return (
+            "📦 Sí, actualmente contamos con espacios disponibles en agenda.\n\n"
+            "Para solicitar una cita escribe así:\n"
+            "👉 cita + servicio + hora\n\n"
+            "Ejemplo:\n"
+            "cita corte 3pm"
+        )
+
+    # PRECIO + DISPONIBILIDAD EN UN SOLO MENSAJE
+    elif re.search(r"\b(precio|costo|cuanto|valor)\b", msg) and re.search(r"\b(disponible|disponibilidad|espacio|cupo)\b", msg):
+        return (
+            "💰 En cuanto a precios:\n"
             "💇‍♀️ Corte: Q30\n"
             "💅 Manicure: Q40\n"
             "🎨 Tinte: desde Q80\n"
             "💆‍♀️ Tratamientos: desde Q60\n\n"
-            "📅 Actualmente contamos con espacios disponibles.\n"
-            "Si deseas reservar, escribe:\n"
-            "👉 cita + servicio + hora"
+            "📦 Además, sí contamos con espacios disponibles.\n"
+            "Puedes reservar escribiendo: cita + servicio + hora"
         )
 
-    # SERVICIOS
-    elif re.search(r"\b(servicios|que ofrecen|tratamientos)\b", msg):
+    # CITA ESPECÍFICA
+    elif re.search(r"^cita\s+[a-záéíóúñ ]+\s+\d{1,2}(\:\d{2})?\s?(am|pm)?$", msg):
         return (
-            "✨ Servicios disponibles:\n"
-            "1. Corte de cabello\n"
-            "2. Manicure y pedicure\n"
-            "3. Tinte\n"
-            "4. Tratamientos capilares"
+            "✅ Tu solicitud de cita fue registrada correctamente.\n"
+            "📅 En breve confirmaremos la disponibilidad del horario solicitado.\n\n"
+            "Gracias por elegir nuestro salón 💖"
         )
 
-    # CONFIRMACIÓN DE CITA
-    elif re.search(r"^cita\s+[a-záéíóúñ]+\s+\d{1,2}(am|pm)?$", msg):
+    # CITA GENERAL
+    elif re.search(r"\b(cita|citas|reservar|reserva|agendar|agendo|quiero una cita|quisiera agendar una cita|quisiera una cita|agendar una cita|quiero una cita)\b", msg):
         return (
-            "✅ Tu solicitud de cita fue recibida.\n"
-            "📲 En breve confirmaremos disponibilidad.\n"
-            "Gracias por confiar en nosotros 💖"
-        )
-
-    # CITAS GENERAL
-    elif re.search(r"\b(cita|reservar|agendar)\b", msg):
-        return (
-            "📅 Para agendar una cita escribe:\n"
+            "📅 Para solicitar una cita, escribe el mensaje con este formato:\n"
             "👉 cita + servicio + hora\n\n"
-            "Ejemplo:\n"
-            "cita manicure 10am"
+            "Ejemplos:\n"
+            "cita corte 3pm\n"
+            "cita manicure 10am\n"
+            "cita tinte 2pm"
+            "asegurese de brindar la informacion correcta de su cita"
         )
+
+    # PRODUCTOS
+    elif re.search(r"\b(producto|productos|shampoo|mascarilla|tratamiento capilar|crema)\b", msg):
+        return (
+            "🧴 También contamos con algunos productos para el cuidado personal.\n"
+            "Consulta disponibilidad y precio escribiendo el nombre del producto."
+        )
+
+    # AGRADECIMIENTO
+    elif re.search(r"\b(gracias|muchas gracias|ok gracias|perfecto gracias)\b", msg):
+        return "💖 Con gusto. Estamos para servirte. Si deseas más información, solo escríbenos."
 
     # DESPEDIDA
-    elif re.search(r"\b(gracias|ok|adios|bye)\b", msg):
-        return "💖 Gracias por escribir. ¡Te esperamos en el salón!"
+    elif re.search(r"\b(adios|adiós|bye|hasta luego|nos vemos)\b", msg):
+        return "👋 Gracias por comunicarte con nuestro Salón de Belleza. ¡Será un gusto atenderte!"
 
     # MENSAJE NO ENTENDIDO
     else:
         return (
-            "🤖 No entendí tu mensaje.\n\n"
-            "Puedes escribir:\n"
+            "🤖 No logré entender tu mensaje.\n\n"
+            "Puedes escribir, por ejemplo:\n"
             "📍 ubicaciones\n"
             "🕒 horarios\n"
             "💰 precios\n"
-            "📅 cita\n"
-            "✨ servicios"
+            "📦 disponibilidad\n"
+            "✨ servicios\n"
+            "📅 cita corte 3pm"
         )
 
 # ENVIAR MENSAJE A WHATSAPP
