@@ -131,7 +131,7 @@ def procesar_mensaje(msg):
         return (
             "✅ Tu solicitud de cita fue registrada correctamente.\n"
             "📅 En breve confirmaremos la disponibilidad del horario solicitado.\n\n"
-            "Gracias por elegir nuestro salón 💖"
+            "Gracias por elegir nuestro salón 💖\n"
             "tambien ofrecemos productos de cuidado de la piel y otros mas, si desea hecharle un vistaso escriba 'productos'"
         )
 
@@ -143,7 +143,7 @@ def procesar_mensaje(msg):
             "Ejemplos:\n"
             "cita corte 3pm\n"
             "cita manicure 10am\n"
-            "cita tinte 2pm"
+            "cita tinte 2pm\n"
             "asegurese de brindar la informacion correcta de su cita"
         )
 
