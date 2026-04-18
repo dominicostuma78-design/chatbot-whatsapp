@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 # CONFIGURACIÓN
 VERIFY_TOKEN = "123456"
-ACCESS_TOKEN = "EAAX0sznTwr0BRJX4mgWw4WcT546iZCoqRD5UZCS3bXgOckj0XKDQp6Bu5axI1lZAy7uJxLHXNOs1RY3qNDwxaRFtu0oqqhgeSXWRpCQ2YE5G4DtLquueAa8ng74Wrp693W1kOYifsgbi32P4pEgZAOFUoZC4CtnMYnOMsN6ZAORu8DJSDxdCC0B43cBNARRFZB9heskE5r76ZAoRTjLb92Y86jPL16IzdrigmUrraJZB8LRQQSMBDP1K2KZCZAu8OZC09mOVeEsDnast1au9ViKoEDTkuFPI"
+ACCESS_TOKEN = "EAAX0sznTwr0BRLMEnpLKjJVBKOYDYxxEmY9ZCn0xtdOYZCxpf48fmuBHhwCQ63If0ceuZBJEP3qO8UhnEhMa7rIZBZBMsSTFbaigKI9h3mDpKshQXqv9UPVa2nHITa65KMPh5Rf94D92thkOgOivq5UkgRzLYvJmGqtNvADyFFcZAZAoek3SkSSL2lzwM5U6KRhZAfb8yQ0HSZAIMZBLIgivBZAJrxMVnrZCRiYEHPC50aNaY3sejVFZBi1nlzgCLm2VUWRf5tQnpwhUkDYwvtUncz5DOcIUD"
 PHONE_NUMBER_ID = "1100661589791810"
 
 # VERIFICACIÓN WEBHOOK (META)
@@ -57,7 +57,7 @@ def procesar_mensaje(msg):
         )
 
     # UBICACIONES
-    elif re.search(r"\b(ubicacion|ubicaciones|direccion|direcciones|donde estan|donde se ubican|donde queda|donde quedan|donde se encuentran|sucursales)\b", msg):
+    elif re.search(r"\b(ubicacion|ubicaciones|direccion|direcciones|donde estan|donde se ubican|donde queda|donde quedan|donde se encuentran|sucursales|donde se ubican|Ubicación|Dónde se ubican)\b", msg):
         return (
             "📍 Contamos con estas ubicaciones:\n"
             "1. Sucursal Centro de santa cruz del Quiche\n"
