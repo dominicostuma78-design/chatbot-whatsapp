@@ -132,6 +132,7 @@ def procesar_mensaje(msg):
             "✅ Tu solicitud de cita fue registrada correctamente.\n"
             "📅 En breve confirmaremos la disponibilidad del horario solicitado.\n\n"
             "Gracias por elegir nuestro salón 💖"
+            "tambien ofrecemos productos de cuidado de la piel y otros mas, si desea hecharle un vistaso escriba 'productos'"
         )
 
     # CITA GENERAL
@@ -146,13 +147,7 @@ def procesar_mensaje(msg):
             "asegurese de brindar la informacion correcta de su cita"
         )
 
-    # PRODUCTOS
-    elif re.search(r"\b(producto|productos|shampoo|mascarilla|tratamiento capilar|crema)\b", msg):
-        return (
-            "🧴 También contamos con algunos productos para el cuidado personal.\n"
-            "Consulta disponibilidad y precio escribiendo el nombre del producto."
-        )
-
+   
     # AGRADECIMIENTO
     elif re.search(r"\b(gracias|muchas gracias|ok gracias|perfecto gracias)\b", msg):
         return "💖 Con gusto. Estamos para servirte. Si deseas más información, solo escríbenos."
@@ -172,7 +167,62 @@ def procesar_mensaje(msg):
             "📦 disponibilidad\n"
             "✨ servicios\n"
             "📅 cita corte 3pm"
-        )
+    
+# 🔹 CATÁLOGO DE PRODUCTOS
+elif re.search(r"\b(producto|productos)\b", msg):
+    return (
+        "🧴 *Catálogo de Productos Disponibles*\n\n"
+        
+        "✨ Cuidado del cabello:\n"
+        "1. Shampoo profesional\n"
+        "   ✔ Limpieza profunda\n"
+        "   💰 Q35\n\n"
+        
+        "2. Acondicionador hidratante\n"
+        "   ✔ Suaviza y da brillo\n"
+        "   💰 Q30\n\n"
+        
+        "3. Mascarilla capilar\n"
+        "   ✔ Reparación intensiva\n"
+        "   💰 Q50\n\n"
+        
+        "4. Crema para peinar\n"
+        "   ✔ Control de frizz\n"
+        "   💰 Q25\n\n"
+        
+        "✨ Tratamientos especiales:\n"
+        "5. Ampolla reparadora\n"
+        "   ✔ Nutrición profunda\n"
+        "   💰 Q20\n\n"
+        
+        "6. Aceite capilar\n"
+        "   ✔ Brillo y suavidad\n"
+        "   💰 Q40\n\n"
+
+         
+        "7. Spray fijador\n"
+        "   ✔ Fijación del peinado\n"
+        "   💰 Q30\n\n"
+        
+        "✨ Tratamientos especiales:\n"
+        "8. Ampolla reparadora\n"
+        "   ✔ Nutrición profunda\n"
+        "   💰 Q20\n\n"
+        
+        "9. Aceite capilar\n"
+        "   ✔ Brillo y suavidad\n"
+        "   💰 Q40\n\n"
+        
+        "10. Tratamiento anti-caída\n"
+        "    ✔ Fortalece la raíz del cabello\n"
+        "    💰 Q60\n\n"
+        
+        
+        "🛍️ PARA COMPRAR EN TIENDA FISICA:\n"
+        
+    )
+
+
 
 # ENVIAR MENSAJE A WHATSAPP
 def enviar_mensaje(numero, mensaje):
