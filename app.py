@@ -143,7 +143,7 @@ def procesar_mensaje(msg):
             "Ejemplos:\n"
             "cita corte 3pm\n"
             "cita manicure 10am\n"
-            "cita tinte 2pm\n"
+            "cita tinte 2pm\n\n"
             "asegurese de brindar la informacion correcta de su cita"
         )
 
@@ -155,22 +155,10 @@ def procesar_mensaje(msg):
     # DESPEDIDA
     elif re.search(r"\b(adios|adiós|bye|hasta luego|nos vemos)\b", msg):
         return "👋 Gracias por comunicarte con nuestro Salón de Belleza. ¡Será un gusto atenderte!"
-
-    # MENSAJE NO ENTENDIDO
-    else:
-        return (
-            "🤖 No logré entender tu mensaje.\n\n"
-            "Puedes escribir, por ejemplo:\n"
-            "📍 ubicaciones\n"
-            "🕒 horarios\n"
-            "💰 precios\n"
-            "📦 disponibilidad\n"
-            "✨ servicios\n"
-            "📅 cita corte 3pm"
-    
+  
 # 🔹 CATÁLOGO DE PRODUCTOS
-elif re.search(r"\b(producto|productos)\b", msg):
-    return (
+    elif re.search(r"\b(producto|productos)\b", msg):
+     return (
         "🧴 *Catálogo de Productos Disponibles*\n\n"
         
         "✨ Cuidado del cabello:\n"
@@ -220,6 +208,19 @@ elif re.search(r"\b(producto|productos)\b", msg):
         
         "🛍️ PARA COMPRAR EN TIENDA FISICA:\n"
         
+    )
+
+         # MENSAJE NO ENTENDIDO
+    else:
+        return (
+            "🤖 No logré entender tu mensaje.\n\n"
+            "Puedes escribir, por ejemplo:\n"
+            "📍 ubicaciones\n"
+            "🕒 horarios\n"
+            "💰 precios\n"
+            "📦 disponibilidad\n"
+            "✨ servicios\n"
+            "📅 cita corte 3pm"
     )
 
 
