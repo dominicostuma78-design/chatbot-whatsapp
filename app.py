@@ -1,15 +1,15 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request
 import requests
 import re
 
 app = Flask(__name__)
 
-# 🔐 CONFIGURACIÓN
+# CONFIGURACIÓN
 VERIFY_TOKEN = "123456"
-ACCESS_TOKEN = "EAAX0sznTwr0BRJZAlZAT2vJPJe5n1SliWCf6svop4BlXKSN5dAcNabZAJklqy82A0IDMogMVHn6da3hZA5BAR53ULNYIL9IORqHl7twkk6W9JophzhKuzBftye0EQdQorkPolvC9mrqXY2kli1aAO199kMZAW5acW16c0vkZCdhCrxl3RN0nv6Wz69ZBDohZA2vbW6O99mZAkZCRbUxgSNcNwctGjZC31ZBfF7egHynTv5bp4w0KyOUysZCm2ICboQLutxXMzz3EEN8engJtgdUbLc4JIqabt"
+ACCESS_TOKEN = "EAAX0sznTwr0BRBFLPl8uRhQij0egZAttnXJUeAzCbF1VfmuCBsLn0gZB6vRLhi7gAFo3N3QZAqG9ULDSRDVskPomQiZCoh5SBfWnFqoMo6NOVGGwpP3GJw8IHQ0F0kZBhOp3jR2Skno377c8oodKxhV7kpPvFkC573NlQlf1bDyDWfCDCcxtcDcYO7mkemad6dAsZBW6mfrVlfGFUNqZCPamVSWDsEPZAhGbKMDv9oUiUbNvMqkcGTy6ErJN696maIZCV1SwoRlZCI0xLzIokXL8BaBdb6"
 PHONE_NUMBER_ID = "1100661589791810"
 
-# 🌐 VERIFICACIÓN WEBHOOK (META)
+# VERIFICACIÓN WEBHOOK (META)
 @app.route("/webhook", methods=["GET"])
 def verify():
     mode = request.args.get("hub.mode")
@@ -18,10 +18,9 @@ def verify():
 
     if mode == "subscribe" and token == VERIFY_TOKEN:
         return challenge, 200
-    else:
-        return "Error", 403
+    return "Error", 403
 
-# 📩 RECIBIR MENSAJES DE WHATSAPP
+# RECIBIR MENSAJES DE WHATSAPP
 @app.route("/webhook", methods=["POST"])
 def webhook():
     data = request.get_json()
@@ -34,45 +33,112 @@ def webhook():
         respuesta = procesar_mensaje(text)
         enviar_mensaje(sender, respuesta)
 
-    except:
-        pass
+    except Exception as e:
+        print("Error al procesar mensaje:", e)
 
     return "ok", 200
 
-# 🧠 LÓGICA DEL CHATBOT
+# LÓGICA DEL CHATBOT
 def procesar_mensaje(msg):
+    msg = msg.lower().strip()
 
-    if re.search(r"\b(hola|buenas|hey|salon)\b", msg):
-        return "💇‍♀️ Hola, bienvenido al salón de belleza. ¿En qué podemos ayudarte?"
+    # SALUDO
+    if re.search(r"\b(hola|buenas|hey|salon|informacion)\b", msg):
+        return (
+            "💇‍♀️ ¡Bienvenido a nuestro Salón de Belleza!\n\n"
+            "✨ Puedes consultar:\n"
+            "📍 Ubicaciones\n"
+            "🕒 Horarios\n"
+            "💰 Precios\n"
+            "📅 Citas\n"
+            "✨ Servicios\n"
+            "📦 Disponibilidad\n\n"
+            "Escribe lo que necesitas 😊"
+        )
 
+    # UBICACIONES
+    elif re.search(r"\b(ubicacion|ubicaciones|donde estan|direccion)\b", msg):
+        return (
+            "📍 Nuestras ubicaciones disponibles:\n"
+            "1. Centro de la ciudad\n"
+            "2. Zona comercial\n\n"
+            "Puedes escribir 'mapa' para más detalles."
+        )
+
+    # MAPA
+    elif re.search(r"\b(mapa|ubicacion exacta)\b", msg):
+        return (
+            "📍 Ubicación de referencia:\n"
+            "https://maps.google.com\n\n"
+            "Te esperamos 💇‍♀️"
+        )
+
+    # HORARIOS
+    elif re.search(r"\b(horario|horarios|hora|abren|atienden)\b", msg):
+        return (
+            "🕒 Horario de atención:\n"
+            "Lunes a sábado\n"
+            "⏰ 8:00 AM - 6:00 PM"
+        )
+
+    # PRECIOS Y DISPONIBILIDAD
+    elif re.search(r"\b(precio|precios|costo|cuanto|valor|disponible|disponibilidad|tienen|hay espacio)\b", msg):
+        return (
+            "💰 Información de precios y disponibilidad:\n"
+            "💇‍♀️ Corte: Q30\n"
+            "💅 Manicure: Q40\n"
+            "🎨 Tinte: desde Q80\n"
+            "💆‍♀️ Tratamientos: desde Q60\n\n"
+            "📅 Actualmente contamos con espacios disponibles.\n"
+            "Si deseas reservar, escribe:\n"
+            "👉 cita + servicio + hora"
+        )
+
+    # SERVICIOS
     elif re.search(r"\b(servicios|que ofrecen|tratamientos)\b", msg):
-        return ("Ofrecemos:\n"
-                "💇‍♀️ Corte de cabello\n"
-                "💅 Manicure y pedicure\n"
-                "🎨 Tinte\n"
-                "💆‍♀️ Tratamientos capilares")
+        return (
+            "✨ Servicios disponibles:\n"
+            "1. Corte de cabello\n"
+            "2. Manicure y pedicure\n"
+            "3. Tinte\n"
+            "4. Tratamientos capilares"
+        )
 
-    elif re.search(r"\b(precio|costo|cuanto)\b", msg):
-        return ("Precios:\n"
-                "Corte: Q30\n"
-                "Manicure: Q40\n"
-                "Tinte: desde Q80")
+    # CONFIRMACIÓN DE CITA
+    elif re.search(r"^cita\s+[a-záéíóúñ]+\s+\d{1,2}(am|pm)?$", msg):
+        return (
+            "✅ Tu solicitud de cita fue recibida.\n"
+            "📲 En breve confirmaremos disponibilidad.\n"
+            "Gracias por confiar en nosotros 💖"
+        )
 
-    elif re.search(r"\b(horario|abren|atienden)\b", msg):
-        return "Horario: lunes a sábado de 8:00 AM a 6:00 PM"
-
+    # CITAS GENERAL
     elif re.search(r"\b(cita|reservar|agendar)\b", msg):
-        return "Para agendar cita escribe: cita + servicio + hora"
+        return (
+            "📅 Para agendar una cita escribe:\n"
+            "👉 cita + servicio + hora\n\n"
+            "Ejemplo:\n"
+            "cita manicure 10am"
+        )
 
-    elif re.search(r"\b(gracias|ok|adios)\b", msg):
-        return "Gracias por escribir 💖"
+    # DESPEDIDA
+    elif re.search(r"\b(gracias|ok|adios|bye)\b", msg):
+        return "💖 Gracias por escribir. ¡Te esperamos en el salón!"
 
+    # MENSAJE NO ENTENDIDO
     else:
-        return "No entendí. Escribe 'servicios' para ver opciones."
+        return (
+            "🤖 No entendí tu mensaje.\n\n"
+            "Puedes escribir:\n"
+            "📍 ubicaciones\n"
+            "🕒 horarios\n"
+            "💰 precios\n"
+            "📅 cita\n"
+            "✨ servicios"
+        )
 
-# 📤 ENVIAR MENSAJE A WHATSAPP
+# ENVIAR MENSAJE A WHATSAPP
 def enviar_mensaje(numero, mensaje):
-
     url = f"https://graph.facebook.com/v18.0/{PHONE_NUMBER_ID}/messages"
 
     headers = {
@@ -89,13 +155,14 @@ def enviar_mensaje(numero, mensaje):
         }
     }
 
-    requests.post(url, headers=headers, json=data)
+    response = requests.post(url, headers=headers, json=data)
+    print("Respuesta de Meta:", response.status_code, response.text)
 
-# 🟢 RUTA PRINCIPAL
+# RUTA PRINCIPAL
 @app.route("/")
 def inicio():
     return "Chatbot activo"
 
-# 🚀 EJECUCIÓN
+# EJECUCIÓN
 if __name__ == "__main__":
     app.run()
